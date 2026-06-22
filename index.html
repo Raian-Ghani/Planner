@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission-Control</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <canvas id="blob-canvas"></canvas>
+
+    <div class="ui-wrapper">
+        
+        <aside class="sidebar">
+            <h1 id="mControl">Mission-Control</h1>
+            <div class="sidebar-options">
+                <button class="nav-btn active">Dashboard</button>
+                <button class="nav-btn">Analytics</button>
+                <button class="nav-btn">Settings</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <section class="Forum">
+                <div class="task">
+                    <input id="task1" type="text" placeholder="task...">
+                </div>
+
+                <div class="priority">
+                    <select name="priority" id="priority1">
+                        <option value=""></option>
+                        <option value="High">High</option>
+                        <option value="Mid">Mid</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+                <div class="time">
+                    <input id="time1" type="number" placeholder="time in mins..." min="1">
+                </div>
+                <button id="submitButt">submit</button>
+            </section>
+
+<section class="interest-panel">
+    <div class="panel-header">Initialize Core Interests</div>
+    <p class="panel-subtitle">Select or add vectors to customize your dashboard matrix.</p>
+    
+    <div id="interestTags" class="tag-cloud">
+    </div>
+
+    <div class="interest-input-group">
+        <input id="customInterest" type="text" placeholder="Add new vector (e.g., Gaming)...">
+        <button id="addInterestButt">+</button>
+    </div>
+</section>
+
+        </main>
+    </div>
+
+</body>
+</html>

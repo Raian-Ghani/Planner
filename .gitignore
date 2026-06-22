@@ -1,0 +1,11 @@
+src/
+
+main.rs
+
+target/
+
+cargo.lock
+
+Cargo.toml
+
+.wakatime-project
