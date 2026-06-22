@@ -1,6 +1,6 @@
 :root {
     --bg-main: #00080e;
-    --bg-panel: rgba(0, 16, 26, 0.65); /* Semi-transparent sleek dark glass */
+    --bg-panel: rgba(0, 16, 26, 0.65); 
     --grid-line: rgba(134, 185, 177, 0.08); 
     --grid-size: 40px; 
     --text: #86B9B1;
@@ -13,27 +13,25 @@ html, body {
     width: 100%;
     height: 100%;
     background-color: var(--bg-main);
-    font-family: 'Courier New', Courier, monospace; /* Clean sci-fi/terminal font */
+    font-family: 'Courier New', Courier, monospace;
 }
 
 body {
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-/* BACKGROUND GRID ENGINE LAYER (Stays exact same) */
-/* Remove all .grid-overlay styles and add this */
 #blob-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1; /* Sits behind the forms */
-    pointer-events: none; /* Let clicks pass right through to inputs */
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* UI WRAPPER: splits screen into 280px sidebar, and remaining content space */
+/* UI WRAPPER SYSTEM GRID */
 .ui-wrapper {
     position: relative;
     z-index: 5; 
@@ -57,7 +55,7 @@ body {
 
 #mControl {
     color: var(--text);
-    font-size: 28px;
+    font-size: 24px;
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -86,28 +84,44 @@ body {
     box-shadow: 0 0 10px rgba(134, 185, 177, 0.2);
 }
 
-/* RIGHT HAND SIDE CONTENT CONTAINER */
+/* RIGHT HAND SIDE INTERFACE ARCHITECTURE */
 .main-content {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Splits the space 50/50 between Forum and Spinner */
+    grid-template-columns: 1.2fr 1fr;
     gap: 25px;
     padding: 25px;
     box-sizing: border-box;
     align-items: start;
+    overflow-y: auto;
+    height: 100vh;
 }
 
-/* FORUM PANEL (RECT 2) */
-.Forum {
+.main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* STANDARD PANEL DESIGN MATRIX (RECT 2 & RECT 3 Base) */
+.Forum, .interest-panel {
     background: var(--bg-panel);
     border: 1px solid rgba(134, 185, 177, 0.2);
-    backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(8px);
     padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    border-radius: 4px;
+    transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.1s ease, box-shadow 0.1s ease;
 }
 
-#task1, #priority1, #time1, #submitButt {
+.Forum.bubble-active, .interest-panel.bubble-active {
+    transform: scale(0.985);
+    border-color: var(--text);
+    box-shadow: 0 0 15px rgba(134, 185, 177, 0.25);
+}
+
+#task1, #priority1, #time1, #submitButt, #spinButt {
     width: 100%;
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0.4);
@@ -115,6 +129,12 @@ body {
     color: var(--text);
     font-size: 18px;
     padding: 12px;
+    outline: none;
+    font-family: inherit;
+}
+
+#task1:focus, #priority1:focus, #time1:focus {
+    border-color: var(--text);
 }
 
 #priority1 option {
@@ -133,20 +153,12 @@ body {
     background: rgba(134, 185, 177, 0.25);
 }
 
-/* SPINNER PANEL (RECT 3) */
-/* INTEREST PANEL LAYOUT (RECT 3) */
-.interest-panel {
-    background: var(--bg-panel);
-    border: 1px solid rgba(134, 185, 177, 0.2);
-    backdrop-filter: blur(8px);
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 .panel-header {
-    color: #86B9B1;
+    color: var(--text);
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .panel-subtitle {
@@ -156,19 +168,61 @@ body {
     line-height: 1.4;
 }
 
-/* Dynamic container for interest chips */
+/* DYNAMIC DATA MATRIX STORAGE LIST */
+.data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.data-list li {
+    background: rgba(0, 0, 0, 0.5); /* Slightly darker background for better text contrast */
+    border: 1px solid rgba(134, 185, 177, 0.3);
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    font-size: 18px; /* Bigger font as requested */
+    font-weight: bold;
+    color: var(--text); /* Changes text color to bright theme teal so you can actually read it */
+    text-shadow: 0 0 6px rgba(134, 185, 177, 0.4); /* Subtle matrix-style neon glow */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid rgba(134, 185, 177, 0.6);
+}
+
+.data-list li.high-priority {
+    border-left-color: var(--text);
+    background: rgba(134, 185, 177, 0.08);
+}
+
+.data-list li button {
+    background: transparent;
+    border: 1px solid rgba(134, 185, 177, 0.4);
+    color: var(--text);
+    padding: 4px 8px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.data-list li button:hover {
+    background: rgba(134, 185, 177, 0.2);
+    border-color: var(--text);
+}
+
+/* INTEREST VECTOR CHIP LAYOUTS */
 .tag-cloud {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    min-height: 120px;
+    min-height: 100px;
     padding: 15px;
     background: rgba(0, 0, 0, 0.3);
     border: 1px dashed rgba(134, 185, 177, 0.2);
     align-content: flex-start;
 }
 
-/* Glowing Neon Chips */
 .tag {
     background: rgba(134, 185, 177, 0.1);
     border: 1px solid rgba(134, 185, 177, 0.4);
@@ -179,14 +233,13 @@ body {
     cursor: pointer;
     transition: transform 0.1s ease, background 0.2s;
 }
-
 .tag:hover {
     background: rgba(134, 185, 177, 0.25);
+    border-color: var(--text);
     box-shadow: 0 0 8px rgba(134, 185, 177, 0.3);
     transform: scale(1.03);
 }
 
-/* Input block alignment */
 .interest-input-group {
     display: flex;
     gap: 10px;
@@ -199,6 +252,8 @@ body {
     color: var(--text);
     padding: 12px;
     font-size: 16px;
+    outline: none;
+    font-family: inherit;
 }
 
 #addInterestButt {
@@ -209,15 +264,101 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
-
 #addInterestButt:hover {
     background: rgba(134, 185, 177, 0.3);
     box-shadow: 0 0 8px rgba(134, 185, 177, 0.4);
 }
 
-@keyframes pulseGlow {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; text-shadow: 0 0 10px var(--text); }
+/* MECHANICAL SLOTS WINDOW DESIGN SHIELDS */
+.slots-wrapper {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.slot-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.slot-label {
+    font-size: 12px;
+    color: rgba(134, 185, 177, 0.6);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.slot-window {
+    width: 100%;
+    height: 70px; 
+    background: #000c14;
+    border: 2px solid rgba(134, 185, 177, 0.3);
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.8);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.slot-reel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: top 2.5s cubic-bezier(0.05, 0.7, 0.1, 1);
+}
+
+.slot-tile {
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text);
+    text-transform: uppercase;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+#spinButt {
+    background: rgba(134, 185, 177, 0.1);
+    border-color: rgba(134, 185, 177, 0.4);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+#spinButt:hover {
+    background: rgba(134, 185, 177, 0.25);
+    box-shadow: 0 0 10px rgba(134, 185, 177, 0.2);
+}
+
+#spin-readout {
+    font-size: 13px;
+    color: rgba(134, 185, 177, 0.6);
+    text-align: center;
+    min-height: 20px;
+}
+
+@media (max-width: 1024px) {
+    .ui-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        display: none; 
+    }
+    .main-content {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
 }

@@ -24,38 +24,76 @@
 
         <main class="main-content">
             
-            <section class="Forum">
-                <div class="task">
-                    <input id="task1" type="text" placeholder="task...">
-                </div>
+            <div class="main-column">
+                
+                <section class="Forum">
+                    <div class="task">
+                        <input id="task1" type="text" placeholder="task...">
+                    </div>
 
-                <div class="priority">
-                    <select name="priority" id="priority1">
-                        <option value=""></option>
-                        <option value="High">High</option>
-                        <option value="Mid">Mid</option>
-                        <option value="Low">Low</option>
-                    </select>
-                </div>
+                    <div class="priority">
+                        <select name="priority" id="priority1">
+                            <option value=""></option>
+                            <option value="High">High</option>
+                            <option value="Mid">Mid</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
 
-                <div class="time">
-                    <input id="time1" type="number" placeholder="time in mins..." min="1">
-                </div>
-                <button id="submitButt">submit</button>
-            </section>
+                    <div class="time">
+                        <input id="time1" type="number" placeholder="time in mins..." min="1">
+                    </div>
+                    <button id="submitButt">submit</button>
+                </section>
 
-<section class="interest-panel">
-    <div class="panel-header">Initialize Core Interests</div>
-    <p class="panel-subtitle">Select or add vectors to customize your dashboard matrix.</p>
-    
-    <div id="interestTags" class="tag-cloud">
-    </div>
+                <section class="interest-panel">
+                    <div class="panel-header">Initialize Core Interests</div>
+                    <p class="panel-subtitle">Select or add vectors to customize your dashboard matrix.</p>
+                    
+                    <div id="interestTags" class="tag-cloud"></div>
 
-    <div class="interest-input-group">
-        <input id="customInterest" type="text" placeholder="Add new vector (e.g., Gaming)...">
-        <button id="addInterestButt">+</button>
-    </div>
-</section>
+                    <div class="interest-input-group">
+                        <input id="customInterest" type="text" placeholder="Add new vector (e.g., Gaming)...">
+                        <button id="addInterestButt">+</button>
+                    </div>
+                </section>
+
+                <section class="Forum" id="live-tasks-section">
+                    <div class="panel-header">Active Directives</div>
+                    <ul id="active-task-list" class="data-list"></ul>
+                </section>
+
+            </div>
+
+            <div class="main-column">
+                <section class="interest-panel">
+                    <div class="panel-header">The Dual-Slot Machine</div>
+                    <p class="panel-subtitle">Rolling parameters based on interest matrices and time limits.</p>
+                    
+                    <div class="slots-wrapper">
+                        <div class="slot-column">
+                            <span class="slot-label">Slot 1: Wildcard</span>
+                            <div class="slot-window">
+                                <div class="slot-reel" id="slot1-reel">
+                                    <div class="slot-tile">Ready</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="slot-column">
+                            <span class="slot-label">Slot 2: Time-Sizer</span>
+                            <div class="slot-window">
+                                <div class="slot-reel" id="slot2-reel">
+                                    <div class="slot-tile">Ready</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="spinButt">Pull Lever (Roll Machine)</button>
+                    <div id="spin-readout">SYSTEM STATUS: ALL SYSTEMS ACTIVE</div>
+                </section>
+            </div>
 
         </main>
     </div>
