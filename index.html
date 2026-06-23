@@ -11,12 +11,14 @@
 
     <canvas id="blob-canvas"></canvas>
 
-    <button id="sidebar-toggle-trigger" class="sidebar-trigger-btn">☰</button>
-
     <div class="ui-wrapper" id="ui-container">
         
+        <div id="sidebar-expand-tab" class="oval-sticky-tab">
+            <span class="tab-indicator">></span>
+        </div>
+
         <aside class="sidebar" id="matrix-sidebar">
-            <h1 id="mControl">Matrix-Deck</h1>
+            <h1 id="sidebar-toggle-trigger">MISSION CONTROL</h1>
             
             <div class="sidebar-options">
                 <div class="switch-control-group">
@@ -55,7 +57,7 @@
                     </div>
 
                     <div class="time">
-                        <input id="time1" type="number" placeholder="Story points (mins)..." min="1">
+                        <input id="time1" type="number" step="any" placeholder="Mins (e.g., .5 = 50s, .05 = 5s)...">
                     </div>
                     <button id="submitButt">File Directive</button>
                 </section>
@@ -67,12 +69,12 @@
                 </div>
 
                 <section class="interest-panel">
-                    <div class="panel-header">The Dual-Slot Machine</div>
+                    <div class="panel-header">The Slot Machine (Break Generator)</div>
                     <p class="panel-subtitle">Cost: <span style="color: #64ffe8; font-weight: bold;">1 Token</span> per spin</p>
                     
                     <div class="slots-wrapper">
                         <div class="slot-column">
-                            <span class="slot-label">Slot 1: Wildcard</span>
+                            <span class="slot-label">Slot 1: Activity</span>
                             <div class="slot-window">
                                 <div class="slot-reel" id="slot1-reel">
                                     <div class="slot-tile">Ready</div>
@@ -81,7 +83,7 @@
                         </div>
 
                         <div class="slot-column">
-                            <span class="slot-label">Slot 2: Time-Sizer</span>
+                            <span class="slot-label">Slot 2: Break Time</span>
                             <div class="slot-window">
                                 <div class="slot-reel" id="slot2-reel">
                                     <div class="slot-tile">Ready</div>
@@ -129,6 +131,37 @@
                         <ul id="compact-stream-list" class="data-list"></ul>
                     </div>
                 </div>
+
+                <section class="timer-control-center">
+                    <div class="panel-header">Chronos Core Execution Engine</div>
+                    
+                    <div class="timer-wrapper work-tier">
+                        <div class="timer-meta">
+                            <span class="clock-tier-title">01 // EDITABLE WORK FOCUS</span>
+                            <div class="inline-input-wrapper">
+                                <input type="number" id="work-minutes-input" value="25" min="1" placeholder="Mins">
+                                <span>MINS</span>
+                            </div>
+                        </div>
+                        <div class="timer-display-block" id="work-timer-digits">25:00</div>
+                        <div class="timer-btn-group">
+                            <button class="timer-action-btn" id="work-start-btn">ENGAGE</button>
+                            <button class="timer-action-btn" id="work-reset-btn">RESET</button>
+                        </div>
+                    </div>
+
+                    <div class="break-bank-hub">
+                        <div class="break-bank-header">
+                            <span class="clock-tier-title">02 // SLOT MACHINE BREAK INVENTORY</span>
+                            <span class="week-stamp" id="week-log-status">7-Day Retention Shield Active</span>
+                        </div>
+
+                        <div class="break-inventory-shelf" id="break-shelf-container">
+                            </div>
+                    </div>
+                    
+                    <div class="timer-status-line" id="timer-status-msg">SYSTEMS RUNNING // AUTOMATED BACKGROUND TASK TRACKER ARMED</div>
+                </section>
 
             </div>
 
