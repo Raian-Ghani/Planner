@@ -221,6 +221,10 @@ html, body {
     font-family: inherit;
 }
 
+option {
+    background-color: #000c14;
+}
+
 #submitButt, #spinButt {
     background: rgba(134, 185, 177, 0.1);
     cursor: pointer;
