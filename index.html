@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission-Control</title>
+    <title>Mission-Control // Matrix Engine</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
@@ -14,21 +14,21 @@
     <div class="ui-wrapper">
         
         <aside class="sidebar">
-            <h1 id="mControl">Mission-Control</h1>
+            <h1 id="mControl">Matrix-Deck</h1>
             <div class="sidebar-options">
-                <button class="nav-btn active">Dashboard</button>
-                <button class="nav-btn">Analytics</button>
-                <button class="nav-btn">Settings</button>
+                <button class="nav-btn active" id="view-toggle-btn">Toggle Layout View</button>
+                <div class="view-status-tag">Current: <span id="current-view-label">BOARD</span></div>
             </div>
         </aside>
 
         <main class="main-content">
             
-            <div class="main-column">
+            <div class="main-column input-side">
                 
                 <section class="Forum">
+                    <div class="panel-header">Create Directive</div>
                     <div class="task">
-                        <input id="task1" type="text" placeholder="task...">
+                        <input id="task1" type="text" placeholder="Issue ticket details...">
                     </div>
 
                     <div class="priority">
@@ -41,34 +41,20 @@
                     </div>
 
                     <div class="time">
-                        <input id="time1" type="number" placeholder="time in mins..." min="1">
+                        <input id="time1" type="number" placeholder="Story points (mins)..." min="1">
                     </div>
-                    <button id="submitButt">submit</button>
+                    <button id="submitButt">File Directive</button>
                 </section>
 
-                <section class="interest-panel">
-                    <div class="panel-header">Initialize Core Interests</div>
-                    <p class="panel-subtitle">Select or add vectors to customize your dashboard matrix.</p>
-                    
-                    <div id="interestTags" class="tag-cloud"></div>
+                <div class="directives-counters">
+                    <span>BACKLOG: <span id="count-active">0</span></span>
+                    <span>DEPLOYED: <span id="count-resolved">0</span></span>
+                    <span>TOTAL: <span id="count-total">0</span></span>
+                </div>
 
-                    <div class="interest-input-group">
-                        <input id="customInterest" type="text" placeholder="Add new vector (e.g., Gaming)...">
-                        <button id="addInterestButt">+</button>
-                    </div>
-                </section>
-
-                <section class="Forum" id="live-tasks-section">
-                    <div class="panel-header">Active Directives</div>
-                    <ul id="active-task-list" class="data-list"></ul>
-                </section>
-
-            </div>
-
-            <div class="main-column">
                 <section class="interest-panel">
                     <div class="panel-header">The Dual-Slot Machine</div>
-                    <p class="panel-subtitle">Rolling parameters based on interest matrices and time limits.</p>
+                    <p class="panel-subtitle">Rolling parameters based on interest matrices.</p>
                     
                     <div class="slots-wrapper">
                         <div class="slot-column">
@@ -91,8 +77,45 @@
                     </div>
 
                     <button id="spinButt">Pull Lever (Roll Machine)</button>
-                    <div id="spin-readout">SYSTEM STATUS: ALL SYSTEMS ACTIVE</div>
+                    <div id="spin-readout">SYSTEM STATUS: READY</div>
                 </section>
+
+                <section class="interest-panel">
+                    <div class="panel-header">Sprint Scope Vectors</div>
+                    <div id="interestTags" class="tag-cloud"></div>
+                    <div class="interest-input-group">
+                        <input id="customInterest" type="text" placeholder="Add scope component...">
+                        <button id="addInterestButt">+</button>
+                    </div>
+                </section>
+            </div>
+
+            <div class="main-column board-side">
+                
+                <div id="view-board-layout" class="matrix-board">
+                    <div class="board-col">
+                        <div class="col-header">To Do [Backlog]</div>
+                        <ul id="col-backlog" class="data-list"></ul>
+                    </div>
+
+                    <div class="board-col">
+                        <div class="col-header">In Progress</div>
+                        <ul id="col-progress" class="data-list"></ul>
+                    </div>
+
+                    <div class="board-col">
+                        <div class="col-header">Done</div>
+                        <ul id="col-done" class="data-list"></ul>
+                    </div>
+                </div>
+
+                <div id="view-compact-layout" class="matrix-compact-view hidden">
+                    <div class="board-col">
+                        <div class="col-header">All Integrated Directives Stream</div>
+                        <ul id="compact-stream-list" class="data-list"></ul>
+                    </div>
+                </div>
+
             </div>
 
         </main>
