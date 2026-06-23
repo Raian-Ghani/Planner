@@ -221,8 +221,16 @@ html, body {
     font-family: inherit;
 }
 
-option {
-    background-color: #000c14;
+#priority1 option {
+    background-color: #000c14; 
+    color: #64ffe8;            
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px;
+}
+
+#priority1:focus {
+    border-color: #64ffe8;
+    box-shadow: 0 0 8px rgba(100, 255, 232, 0.4);
 }
 
 #submitButt, #spinButt {
