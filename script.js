@@ -83,11 +83,15 @@ const button = document.getElementById('submitButt');
 const priority = document.getElementById('priority1');
 const time = document.getElementById('time1');
 
-// View Layout Toggles
-const viewToggleBtn = document.getElementById('view-toggle-btn');
+// Layout Controls
+const viewToggleSwitch = document.getElementById('view-toggle-switch');
 const currentViewLabel = document.getElementById('current-view-label');
 const boardViewLayout = document.getElementById('view-board-layout');
 const compactViewLayout = document.getElementById('view-compact-layout');
+
+// Collapsible Sidebar Elements
+const sidebarToggleTrigger = document.getElementById('sidebar-toggle-trigger');
+const uiContainer = document.getElementById('ui-container');
 
 // Render Containers
 const colBacklog = document.getElementById('col-backlog');
@@ -95,20 +99,34 @@ const colProgress = document.getElementById('col-progress');
 const colDone = document.getElementById('col-done');
 const compactStreamList = document.getElementById('compact-stream-list');
 
-let currentViewMode = "BOARD"; // Alternate State tracker: "BOARD" or "COMPACT"
+let currentViewMode = "BOARD"; 
 let taskMatrix = JSON.parse(localStorage.getItem('systemDirectives')) || [];
 let totalDirectivesCount = parseInt(localStorage.getItem('totalDirectivesCount')) || 0;
 
-// Layout Toggle Listener Execution
-viewToggleBtn.addEventListener('click', () => {
+// NEW: TOKEN MATRIX DATABASE MEMORY
+let slotTokens = parseInt(localStorage.getItem('slotTokens')) || 0;
+
+function updateTokenDisplay() {
+    document.getElementById('token-display').innerText = slotTokens;
+}
+
+// Collapsible Sidebar Panel Toggle Trigger Action
+sidebarToggleTrigger.addEventListener('click', () => {
+    uiContainer.classList.toggle('sidebar-collapsed');
+});
+
+// Custom Oval Switch Toggle Click Handler
+viewToggleSwitch.addEventListener('click', () => {
+    viewToggleSwitch.classList.toggle('active-on');
+    
     if (currentViewMode === "BOARD") {
         currentViewMode = "COMPACT";
-        currentViewLabel.innerText = "COMPACT STREAM";
+        currentViewLabel.innerText = "STREAM VIEW";
         boardViewLayout.classList.add('hidden');
         compactViewLayout.classList.remove('hidden');
     } else {
         currentViewMode = "BOARD";
-        currentViewLabel.innerText = "BOARD WORKFLOW";
+        currentViewLabel.innerText = "BOARD VIEW";
         compactViewLayout.classList.add('hidden');
         boardViewLayout.classList.remove('hidden');
     }
@@ -122,6 +140,7 @@ function updateCounters() {
     if (document.getElementById('count-active')) document.getElementById('count-active').innerText = backlogCount;
     if (document.getElementById('count-resolved')) document.getElementById('count-resolved').innerText = doneCount;
     if (document.getElementById('count-total')) document.getElementById('count-total').innerText = totalDirectivesCount;
+    updateTokenDisplay();
 }
 
 function renderDirectives() {
@@ -154,7 +173,6 @@ function renderDirectives() {
             </div>
         `;
 
-        // Render dynamically based on layout view settings selection
         if (currentViewMode === "BOARD") {
             if (item.status === 'backlog') colBacklog.appendChild(li);
             if (item.status === 'progress') colProgress.appendChild(li);
@@ -192,7 +210,17 @@ button.addEventListener('click', () => {
 });
 
 window.advanceTicket = function(ticketId, newStatus) {
-    taskMatrix = taskMatrix.map(t => t.id === ticketId ? { ...t, status: newStatus } : t);
+    taskMatrix = taskMatrix.map(t => {
+        if (t.id === ticketId) {
+            // REWARD MECHANIC: Trigger token reward block if moving from work status to Done status
+            if (t.status !== 'done' && newStatus === 'done') {
+                slotTokens++;
+                localStorage.setItem('slotTokens', slotTokens);
+            }
+            return { ...t, status: newStatus };
+        }
+        return t;
+    });
     localStorage.setItem('systemDirectives', JSON.stringify(taskMatrix));
     renderDirectives();
 };
@@ -234,7 +262,7 @@ addInterestBtn.addEventListener('click', () => {
 });
 
 
-// --- MECHANICAL REEL SLOT MACHINE INTERFACE ENGINE ---
+// --- MECHANICAL REEL SLOT MACHINE ECONOMY INTERFACE ENGINE ---
 let isSpinning = false;
 const spinBtn = document.getElementById('spinButt');
 const slot1Reel = document.getElementById('slot1-reel');
@@ -242,7 +270,22 @@ const slot2Reel = document.getElementById('slot2-reel');
 const readout = document.getElementById('spin-readout');
 
 window.executeRewardSequence = function() {
-    if (isSpinning || savedInterests.length === 0) return;
+    if (isSpinning) return;
+    if (savedInterests.length === 0) {
+        readout.innerText = "[ERROR] ADD INTEREST SCENE VECTORS FIRST!";
+        return;
+    }
+    
+    // ECONOMY GATE: Block roll if player bank balance equals zero tokens
+    if (slotTokens < 1) {
+        readout.innerText = "[LOCKED] EARN TOKENS BY DEPLOYING DIRECTIVES!";
+        return;
+    }
+
+    // Charge the account balance fee
+    slotTokens--;
+    localStorage.setItem('slotTokens', slotTokens);
+    updateTokenDisplay();
 
     isSpinning = true;
     readout.innerText = "ROLLING MATRIX REELS...";

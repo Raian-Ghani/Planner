@@ -1,6 +1,6 @@
 :root {
     --bg-main: #00080e;
-    --bg-panel: rgba(0, 16, 26, 0.65); 
+    --bg-panel: rgba(0, 16, 26, 0.75); 
     --text: #86B9B1;
 }
 
@@ -28,6 +28,7 @@ body {
     pointer-events: none;
 }
 
+/* UI WRAPPER TRANSITION FOR COLLAPSE MATRIX */
 .ui-wrapper {
     position: relative;
     z-index: 5; 
@@ -36,57 +37,161 @@ body {
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
+    transition: grid-template-columns 0.3s cubic-bezier(0.1, 0.8, 0.1, 1);
 }
 
+.ui-wrapper.sidebar-collapsed {
+    grid-template-columns: 0px 1fr;
+}
+
+/* COLLAPSIBLE SIDEBAR CONFIGURATIONS */
 .sidebar {
     background: var(--bg-panel);
     border-right: 1px solid rgba(134, 185, 177, 0.2);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 35px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: padding 0.3s cubic-bezier(0.1, 0.8, 0.1, 1);
+}
+
+.ui-wrapper.sidebar-collapsed .sidebar {
+    padding: 30px 0px;
+    border-right-color: transparent;
+}
+
+/* OUTSIDE FIXED TRIGGER HAMBURGER BUTTON */
+.sidebar-trigger-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 100;
+    background: rgba(0, 16, 26, 0.8);
+    border: 1px solid rgba(134, 185, 177, 0.4);
+    color: var(--text);
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.sidebar-trigger-btn:hover {
+    background: rgba(134, 185, 177, 0.2);
+    box-shadow: 0 0 8px rgba(134, 185, 177, 0.4);
 }
 
 #mControl {
     color: var(--text);
     font-size: 24px;
-    margin: 0;
+    margin: 0 0 0 45px; /* Offset to leave room for hamburger icon button */
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 0 0 8px rgba(134, 185, 177, 0.4);
 }
 
+.sidebar-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-left: 5px;
+}
+
+/* THE NESTED OVAL SWITCH STYLING */
+.switch-control-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.switch-label {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.oval-toggle-switch {
+    width: 50px;
+    height: 26px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(134, 185, 177, 0.4);
+    border-radius: 50px; /* Perfect oval outline shapes */
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.switch-circle {
+    width: 18px;
+    height: 18px;
+    background: var(--text);
+    border-radius: 50%; /* Internal circle knob core node */
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    transition: left 0.2s cubic-bezier(0.1, 0.8, 0.1, 1), background-color 0.2s;
+    box-shadow: 0 0 6px rgba(134, 185, 177, 0.6);
+}
+
+/* ON State rules when active toggled */
+.oval-toggle-switch.active-on {
+    background: rgba(100, 255, 232, 0.15);
+    border-color: #64ffe8;
+}
+.oval-toggle-switch.active-on .switch-circle {
+    left: 25px;
+    background: #64ffe8;
+    box-shadow: 0 0 10px #64ffe8;
+}
+
 .view-status-tag {
-    margin-top: 10px;
     color: rgba(134, 185, 177, 0.6);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 1px;
     font-weight: bold;
 }
 
-.nav-btn {
-    background: transparent;
-    border: 1px solid rgba(134, 185, 177, 0.2);
-    color: var(--text);
-    padding: 12px;
-    text-align: left;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    width: 100%;
-}
-.nav-btn:hover, .nav-btn.active {
-    background: rgba(134, 185, 177, 0.15);
-    border-color: var(--text);
-    box-shadow: 0 0 10px rgba(134, 185, 177, 0.2);
+/* TOKEN BANK GRAPHIC DISPLAY BOX */
+.token-bank {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(134, 185, 177, 0.3);
+    padding: 15px;
+    text-align: center;
+    border-radius: 4px;
+    margin-top: auto; /* Pushes vector to bottom of sidebar layout flow */
 }
 
+.token-title {
+    font-size: 11px;
+    color: rgba(134, 185, 177, 0.6);
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.token-count {
+    font-size: 28px;
+    font-weight: bold;
+    color: #64ffe8;
+    text-shadow: 0 0 8px rgba(100, 255, 232, 0.4);
+}
+
+.token-footer {
+    font-size: 10px;
+    color: rgba(134, 185, 177, 0.4);
+    margin-top: 5px;
+    white-space: normal;
+}
+
+/* CONTAINER MAIN FLUID COLUMN LAYOUT GRID RESPONSIVENESS */
 .main-content {
     display: grid;
     grid-template-columns: 420px 1fr; 
     gap: 25px;
-    padding: 25px;
+    padding: 25px 25px 25px 75px; /* Added left padding cushion for trigger bar */
     box-sizing: border-box;
     align-items: start;
     height: 100vh;
@@ -159,7 +264,7 @@ body {
     letter-spacing: 1px;
 }
 
-/* WORKFLOW CONFIGURATION LAYOUTS */
+/* BOARD COLUMNS CONFIGURATIONS */
 .matrix-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -243,7 +348,7 @@ body {
     cursor: pointer;
 }
 
-/* MECHANICAL WHEEL REEL CSS STYLES */
+/* WHEEL MACHINE STYLES */
 .slots-wrapper {
     display: flex;
     gap: 15px;
@@ -324,8 +429,8 @@ body {
 #addInterestButt { background: rgba(134, 185, 177, 0.1); border: 1px solid rgba(134, 185, 177, 0.4); color: var(--text); width: 40px; cursor: pointer; }
 
 @media (max-width: 1024px) {
-    .ui-wrapper { grid-template-columns: 1fr; }
+    .ui-wrapper { grid-template-columns: 1fr !important; }
     .sidebar { display: none; }
-    .main-content { grid-template-columns: 1fr; }
+    .main-content { grid-template-columns: 1fr; padding-left: 25px; }
     .matrix-board { grid-template-columns: 1fr; }
 }
