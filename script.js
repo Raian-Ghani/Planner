@@ -215,7 +215,7 @@ window.clearDirective = function(idx) {
 const interestInput = document.getElementById('customInterest');
 const addInterestBtn = document.getElementById('addInterestButt');
 const tagCloud = document.getElementById('interestTags');
-let savedInterests = JSON.parse(localStorage.getItem('userVectors')) || ["Coding", "Hardware", "Music"];
+let savedInterests = JSON.parse(localStorage.getItem('userVectors')) || ["Example"];
 
 function renderTags() {
     tagCloud.innerHTML = ''; 
