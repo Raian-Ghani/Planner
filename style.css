@@ -102,7 +102,8 @@ html, body {
     border-color: #64ffe8;
 }
 .oval-sticky-tab .tab-indicator {
-    font-size: 11px;
+    font-size: 14px;
+    font-weight: bold;
     color: #64ffe8;
     text-shadow: 0 0 5px rgba(100, 255, 232, 0.5);
     transform: translateX(-1px);
@@ -155,7 +156,8 @@ html, body {
     margin-top: auto; 
 }
 .token-title { font-size: 11px; color: rgba(134, 185, 177, 0.6); letter-spacing: 1.5px; font-weight: bold; margin-bottom: 5px; }
-.token-count { font-size: 28px; font-weight: bold; color: #64ffe8; text-shadow: 0 0 8px rgba(100, 255, 232, 0.4); }
+.token-count { font-size: 24px; font-weight: bold; color: #64ffe8; text-shadow: 0 0 8px rgba(100, 255, 232, 0.4); }
+.tkn-sym { font-size: 13px; color: #64ffe8; font-weight: normal; margin-left: 2px; }
 .token-footer { font-size: 10px; color: rgba(134, 185, 177, 0.4); margin-top: 5px; }
 
 /* MAIN PANELS */
