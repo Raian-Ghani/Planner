@@ -1,6 +1,6 @@
 :root {
     --bg-main: #00080e;
-    --bg-panel: rgba(0, 16, 26, 0.75); 
+    --bg-panel: rgba(0, 16, 26, 0.8); 
     --text: #86B9B1;
 }
 
@@ -11,15 +11,11 @@ html, body {
     height: 100%;
     background-color: var(--bg-main);
     font-family: 'Courier New', Courier, monospace;
-}
-
-body {
-    position: relative;
     overflow-x: hidden;
 }
 
 #blob-canvas {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -28,24 +24,20 @@ body {
     pointer-events: none;
 }
 
-/* UI WRAPPER TRANSITION FOR COLLAPSE MATRIX */
+/* FIXED UI FLEX LAYOUT TO REMOVE GRID INTERFERENCE */
 .ui-wrapper {
     position: relative;
     z-index: 5; 
-    display: grid;
-    grid-template-columns: 280px 1fr;
+    display: flex;
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
-    transition: grid-template-columns 0.3s cubic-bezier(0.1, 0.8, 0.1, 1);
 }
 
-.ui-wrapper.sidebar-collapsed {
-    grid-template-columns: 0px 1fr;
-}
-
-/* COLLAPSIBLE SIDEBAR CONFIGURATIONS */
+/* FIXED SLIDING SIDEBAR ENGINE */
 .sidebar {
+    width: 280px;
+    min-width: 280px;
     background: var(--bg-panel);
     border-right: 1px solid rgba(134, 185, 177, 0.2);
     backdrop-filter: blur(12px);
@@ -53,27 +45,32 @@ body {
     display: flex;
     flex-direction: column;
     gap: 35px;
+    box-sizing: border-box;
+    transition: width 0.3s cubic-bezier(0.1, 0.8, 0.1, 1), min-width 0.3s cubic-bezier(0.1, 0.8, 0.1, 1), padding 0.3s ease, opacity 0.2s ease;
     overflow: hidden;
-    white-space: nowrap;
-    transition: padding 0.3s cubic-bezier(0.1, 0.8, 0.1, 1);
 }
 
+/* COLLAPSED SIDEBAR RULES */
 .ui-wrapper.sidebar-collapsed .sidebar {
+    width: 0px;
+    min-width: 0px;
     padding: 30px 0px;
     border-right-color: transparent;
+    opacity: 0;
+    pointer-events: none;
 }
 
-/* OUTSIDE FIXED TRIGGER HAMBURGER BUTTON */
+/* FLOATING HAMBURGER TOGGLE SYSTEM BUTTON */
 .sidebar-trigger-btn {
     position: fixed;
     top: 15px;
     left: 15px;
     z-index: 100;
-    background: rgba(0, 16, 26, 0.8);
-    border: 1px solid rgba(134, 185, 177, 0.4);
+    background: rgba(0, 16, 26, 0.9);
+    border: 1px solid rgba(134, 185, 177, 0.5);
     color: var(--text);
-    padding: 8px 12px;
-    font-size: 16px;
+    padding: 10px 14px;
+    font-size: 18px;
     cursor: pointer;
     border-radius: 4px;
 }
@@ -84,8 +81,8 @@ body {
 
 #mControl {
     color: var(--text);
-    font-size: 24px;
-    margin: 0 0 0 45px; /* Offset to leave room for hamburger icon button */
+    font-size: 22px;
+    margin: 0 0 0 45px; 
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 0 0 8px rgba(134, 185, 177, 0.4);
@@ -95,10 +92,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding-left: 5px;
 }
 
-/* THE NESTED OVAL SWITCH STYLING */
+/* RE-ENGINEERED OVAL SWITCH INTERFACE */
 .switch-control-group {
     display: flex;
     align-items: center;
@@ -108,7 +104,7 @@ body {
 
 .switch-label {
     color: var(--text);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -116,19 +112,19 @@ body {
 .oval-toggle-switch {
     width: 50px;
     height: 26px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     border: 2px solid rgba(134, 185, 177, 0.4);
-    border-radius: 50px; /* Perfect oval outline shapes */
+    border-radius: 50px; 
     position: relative;
     cursor: pointer;
-    transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
 .switch-circle {
     width: 18px;
     height: 18px;
     background: var(--text);
-    border-radius: 50%; /* Internal circle knob core node */
+    border-radius: 50%; 
     position: absolute;
     top: 2px;
     left: 3px;
@@ -136,7 +132,6 @@ body {
     box-shadow: 0 0 6px rgba(134, 185, 177, 0.6);
 }
 
-/* ON State rules when active toggled */
 .oval-toggle-switch.active-on {
     background: rgba(100, 255, 232, 0.15);
     border-color: #64ffe8;
@@ -149,19 +144,18 @@ body {
 
 .view-status-tag {
     color: rgba(134, 185, 177, 0.6);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 1px;
     font-weight: bold;
 }
 
-/* TOKEN BANK GRAPHIC DISPLAY BOX */
 .token-bank {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(134, 185, 177, 0.3);
     padding: 15px;
     text-align: center;
     border-radius: 4px;
-    margin-top: auto; /* Pushes vector to bottom of sidebar layout flow */
+    margin-top: auto; 
 }
 
 .token-title {
@@ -183,25 +177,25 @@ body {
     font-size: 10px;
     color: rgba(134, 185, 177, 0.4);
     margin-top: 5px;
-    white-space: normal;
 }
 
-/* CONTAINER MAIN FLUID COLUMN LAYOUT GRID RESPONSIVENESS */
+/* CORE STREAM LAYOUT VIEW WORKSPACE */
 .main-content {
+    flex: 1;
     display: grid;
     grid-template-columns: 420px 1fr; 
     gap: 25px;
-    padding: 25px 25px 25px 75px; /* Added left padding cushion for trigger bar */
+    padding: 25px 25px 25px 85px; 
     box-sizing: border-box;
     align-items: start;
     height: 100vh;
+    overflow-y: auto;
 }
 
 .main-column {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    height: calc(100vh - 50px);
 }
 
 .Forum, .interest-panel {
@@ -218,10 +212,10 @@ body {
 #task1, #priority1, #time1, #submitButt, #spinButt {
     width: 100%;
     box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(134, 185, 177, 0.4);
     color: var(--text);
-    font-size: 16px;
+    font-size: 15px;
     padding: 12px;
     outline: none;
     font-family: inherit;
@@ -239,7 +233,7 @@ body {
 
 .panel-header {
     color: var(--text);
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -257,25 +251,24 @@ body {
     padding: 12px 14px;
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(134, 185, 177, 0.3);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     color: var(--text);
     text-shadow: 0 0 5px rgba(134, 185, 177, 0.3);
     letter-spacing: 1px;
 }
 
-/* BOARD COLUMNS CONFIGURATIONS */
+/* BOARD MATRIX INTERFACE CORES */
 .matrix-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    height: 100%;
+    min-height: 500px;
 }
 
 .matrix-compact-view {
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: 100%;
 }
 
@@ -289,8 +282,7 @@ body {
     border-radius: 4px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow: hidden;
+    min-height: 500px;
 }
 
 .col-header {
@@ -307,8 +299,6 @@ body {
     list-style: none;
     padding: 10px;
     margin: 0;
-    flex: 1;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -318,9 +308,8 @@ body {
     background: rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(134, 185, 177, 0.25);
     padding: 14px;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text);
-    text-shadow: 0 0 4px rgba(134, 185, 177, 0.3);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -348,7 +337,7 @@ body {
     cursor: pointer;
 }
 
-/* WHEEL MACHINE STYLES */
+/* WHEEL MECHANICAL CONTAINERS */
 .slots-wrapper {
     display: flex;
     gap: 15px;
@@ -396,7 +385,6 @@ body {
     font-weight: bold;
     color: var(--text);
     text-transform: uppercase;
-    padding: 0 5px;
 }
 
 #spin-readout {
@@ -429,8 +417,6 @@ body {
 #addInterestButt { background: rgba(134, 185, 177, 0.1); border: 1px solid rgba(134, 185, 177, 0.4); color: var(--text); width: 40px; cursor: pointer; }
 
 @media (max-width: 1024px) {
-    .ui-wrapper { grid-template-columns: 1fr !important; }
-    .sidebar { display: none; }
     .main-content { grid-template-columns: 1fr; padding-left: 25px; }
     .matrix-board { grid-template-columns: 1fr; }
 }
