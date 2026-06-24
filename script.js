@@ -38,7 +38,7 @@ requestAnimationFrame(function anim(){
     blobs.forEach(b => {
         let dx = mouse.x - b.x, dy = mouse.y - b.y; let d = Math.sqrt(dx*dx + dy*dy);
         if (d < 100) { 
-            let f = (120 - d) / 120; let a = Math.atan2(dy, dx); 
+            let f = (100 - d) / 100; let a = Math.atan2(dy, dx); 
             b.vx -= Math.cos(a) * f * 2.0; b.vy -= Math.sin(a) * f * 2.0; 
             b.isScared = true;
         } else {
