@@ -16,91 +16,51 @@ let workIsRunning = false;
 let activeBackgroundTimers = {}; 
 let activeBreakIntervals = {}; 
 
-// --- GENESIS CANVAS BACKGROUND PARTICLE ENGINE (OPTIMIZED AT 1500 PARTICLES) ---
+// --- GENESIS CANVAS BACKGROUND PARTICLE ENGINE ---
 const canvas = document.getElementById('blob-canvas'); const ctx = canvas.getContext('2d');
 let mouse = { x: -1000, y: -1000 }; let blobs = [];
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initBlobs(); }
-
 function initBlobs() {
     blobs = [];
-    // Color matrix pre-parsed into safe decimal channels to avoid runtime hex conversion crashes
-    const colorMatrix = [
-        { hex: '#64ffe8', r: 100, g: 255, b: 232 },
-        { hex: '#37a1ff', r: 55,  g: 161, b: 255 },
-        { hex: '#2cff5d', r: 44,  g: 255, b: 93  },
-        { hex: '#ce2cff', r: 206, g: 44,  b: 255 },
-        { hex: '#ff2c92', r: 255, g: 44,  b:146  }
-    ];
-    
     for (let i = 0; i < 1500; i++) {
-        let randomX = Math.random() * window.innerWidth; 
-        let randomY = Math.random() * window.innerHeight;
-        let chosenColor = colorMatrix[Math.floor(Math.random() * colorMatrix.length)];
-        
+        let randomX = Math.random() * window.innerWidth; let randomY = Math.random() * window.innerHeight;
         blobs.push({
-            baseX: randomX, baseY: randomY, 
-            x: randomX, y: randomY, 
-            vx: 0, vy: 0, 
-            radius: Math.random() * 2 + 1,
-            hex: chosenColor.hex,
-            r: chosenColor.r,
-            g: chosenColor.g,
-            b: chosenColor.b,
-            scaredFactor: 0 
+            baseX: randomX, baseY: randomY, x: randomX, y: randomY, vx: 0, vy: 0, radius: Math.random() * 2 + 1,
+            color: ['#64ffe8', '#37a1ff', '#2cff5d', '#b52cff', '#ff2c6f'][Math.floor(Math.random() * 5)],
+            isScared: false
         });
     }
 }
-
 document.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('resize', resizeCanvas); resizeCanvas();
-
 requestAnimationFrame(function anim(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
     blobs.forEach(b => {
-        let dx = mouse.x - b.x, dy = mouse.y - b.y; 
-        let d = Math.sqrt(dx*dx + dy*dy);
-        
-        // Flee physics thresholds
-        if (d < 120) { 
-            let f = (120 - d) / 120; 
-            let a = Math.atan2(dy, dx); 
-            b.vx -= Math.cos(a) * f * 2.5; 
-            b.vy -= Math.sin(a) * f * 2.5; 
-            b.scaredFactor += (1.0 - b.scaredFactor) * 0.15; // Quick neon flash expansion
+        let dx = mouse.x - b.x, dy = mouse.y - b.y; let d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 100) { 
+            let f = (120 - d) / 120; let a = Math.atan2(dy, dx); 
+            b.vx -= Math.cos(a) * f * 2.0; b.vy -= Math.sin(a) * f * 2.0; 
+            b.isScared = true;
         } else {
-            b.scaredFactor += (0.0 - b.scaredFactor) * 0.04; // Smooth atmospheric decay trail
+            b.isScared = false;
         }
-        
         b.vx += (b.baseX - b.x) * 0.05; b.vy += (b.baseY - b.y) * 0.05; b.vx *= 0.85; b.vy *= 0.85; b.x += b.vx; b.y += b.vy;
         
-        // Render smoothly decaying radial glow shield if startle trace exists
-        if (b.scaredFactor > 0.01) {
-            let glowRadius = b.radius * (1 + b.scaredFactor * 14);
-            
-            ctx.save();
-            ctx.globalAlpha = b.scaredFactor * 0.5; // Controls overall brightness ceiling
-            
-            let radialGlow = ctx.createRadialGradient(b.x, b.y, b.radius, b.x, b.y, glowRadius);
-            radialGlow.addColorStop(0, `rgba(${b.r}, ${b.g}, ${b.b}, 0.8)`);
-            radialGlow.addColorStop(0.2, `rgba(${b.r}, ${b.g}, ${b.b}, 0.4)`);
-            radialGlow.addColorStop(1, `rgba(${b.r}, ${b.g}, ${b.b}, 0)`); // Absolute smoky fallout edge
-            
-            ctx.fillStyle = radialGlow;
-            ctx.beginPath();
-            ctx.arc(b.x, b.y, glowRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
+        ctx.beginPath(); 
+        ctx.arc(b.x, b.y, b.isScared ? b.radius * 3 : b.radius, 0, Math.PI*2); 
+        ctx.fillStyle = b.color; 
+        ctx.globalAlpha = b.isScared ? 0.89 : 0.5; 
+        
+        if (b.isScared) {
+            ctx.shadowBlur = 90;
+            ctx.shadowColor = b.color;
+        } else {
+            ctx.shadowBlur = 0;
         }
         
-        // Render physical particle focal core over the aura
-        ctx.beginPath(); 
-        ctx.arc(b.x, b.y, b.scaredFactor > 0.1 ? b.radius * 1.3 : b.radius, 0, Math.PI * 2); 
-        ctx.fillStyle = b.hex; 
-        ctx.globalAlpha = b.scaredFactor > 0.1 ? 0.9 : 0.25; 
         ctx.fill();
     });
-    
+    ctx.shadowBlur = 0; // Reset canvas context state shadows
     requestAnimationFrame(anim);
 });
 
@@ -166,7 +126,7 @@ function executeVectorFormSubmission() {
     }
 }
 
-// Attach forms submission binds
+// Attach listeners to input blocks
 [task, time, priority].forEach(element => {
     element.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -192,11 +152,12 @@ time.addEventListener('keydown', (e) => {
 
 function updateTokenDisplay() { document.getElementById('token-display').innerText = slotTokens; }
 
-// --- SIDEBAR HANDLERS ---
+// --- COLLAPSE MECHANICS LAYER ENGINE ---
 function toggleSidebarState() { uiContainer.classList.toggle('sidebar-collapsed'); }
 sidebarToggleTrigger.addEventListener('click', toggleSidebarState);
 if (expandTab) { expandTab.addEventListener('click', toggleSidebarState); }
 
+// GLOBAL HOTKEY ("C")
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
     if (e.key === 'c' || e.key === 'C') {
@@ -223,7 +184,7 @@ function updateCounters() {
     document.getElementById('count-total').innerText = totalDirectivesCount; updateTokenDisplay();
 }
 
-// --- RENDERING DIRECTIVES ---
+// --- RENDERING WORKSPACE CARDS ---
 function renderDirectives() {
     colBacklog.innerHTML = ''; colProgress.innerHTML = ''; colDone.innerHTML = ''; compactStreamList.innerHTML = '';
     taskMatrix.forEach((item) => {
@@ -246,6 +207,7 @@ function renderDirectives() {
 
         let displayMins = Math.floor(item.totalSeconds / 60);
         let displaySecs = item.totalSeconds % 60;
+        
         let timeString = displayMins > 0 ? (displaySecs > 0 ? `${displayMins}m ${displaySecs}s` : `${displayMins}m`) : `${displaySecs}s`;
 
         li.innerHTML = `
@@ -314,7 +276,7 @@ workStartBtn.addEventListener('click', () => {
 });
 workResetBtn.addEventListener('click', () => { clearInterval(workInterval); workIsRunning = false; workStartBtn.innerText = "ENGAGE"; workSecondsLeft = (parseInt(workMinutesInput.value) || 25) * 60; displayWorkClock(); });
 
-// --- BREAK REWARD MANAGEMENT ---
+// --- BREAK HOUSING INVENTORY DECK ---
 window.triggerBreakActivation = function(chipId) {
     breakRegistry = breakRegistry.map(b => {
         if (b.id === chipId && b.state === 'saved') {
@@ -432,5 +394,5 @@ function renderTags() {
     });
 }
 
-// Initial engine orchestration boot
+// Initial runtime boot configs
 renderTags(); renderDirectives(); displayWorkClock(); renderBreakBankShelf();

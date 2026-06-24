@@ -22,8 +22,11 @@ html, body {
     height: 100vh;
     z-index: 1;
     pointer-events: none;
+    filter: saturate(1.0) brightness(1.0);
+    transition: filter 0.8s ease;
 }
 
+/* HARDWARE-ACCELERATED SCREEN PROTECTOR DISSOLVE SYSTEM */
 .ui-wrapper {
     position: relative;
     z-index: 5; 
@@ -32,6 +35,25 @@ html, body {
     height: 100vh;
     box-sizing: border-box;
     transition: all 0.35s cubic-bezier(0.1, 0.8, 0.1, 1);
+}
+
+/* Transition values for UI targets so they dissolve organically when idle */
+.sidebar, .main-content, .Forum, .interest-panel, .timer-control-center {
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s ease;
+}
+
+/* Triggered by JavaScript when mouse leaves window or goes completely idle */
+.screen-saver-active .sidebar,
+.screen-saver-active .main-content,
+.screen-saver-active .oval-sticky-tab {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: scale(0.98);
+}
+
+/* Boost background blob saturation and color visibility when screensaver is active */
+.screen-saver-active #blob-canvas {
+    filter: saturate(1.8) brightness(1.2);
 }
 
 /* SIDEBAR LAYOUT */
@@ -248,13 +270,23 @@ html, body {
     border-color: #64ffe8;
 }
 
-/* SLOT REEL */
+/* SLOT REEL ANIMATION */
 .slots-wrapper { display: flex; gap: 15px; margin: 5px 0; }
 .slot-column { display: flex; flex-direction: column; align-items: center; flex: 1; }
 .slot-label { font-size: 11px; color: rgba(134, 185, 177, 0.6); text-transform: uppercase; margin-bottom: 4px; }
 .slot-window { width: 100%; height: 50px; background: #000c14; border: 1px solid rgba(134, 185, 177, 0.3); overflow: hidden; position: relative; }
 .slot-reel { position: absolute; top: 0; left: 0; width: 100%; display: flex; flex-direction: column; }
 .slot-tile { height: 48px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: var(--text); text-transform: uppercase; }
+
+/* Moving Text Blur Keyframes during script spin action */
+.slots-spinning .slot-tile {
+    animation: slotDriftBlur 0.08s infinite alternate;
+}
+@keyframes slotDriftBlur {
+    0% { transform: translateY(-3px); filter: blur(2px); }
+    100% { transform: translateY(3px); filter: blur(2px); }
+}
+
 #spin-readout { font-size: 11px; color: rgba(134, 185, 177, 0.6); text-align: center; }
 
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; min-height: 50px; padding: 8px; background: rgba(0, 0, 0, 0.3); border: 1px dashed rgba(134, 185, 177, 0.2); }
@@ -312,7 +344,7 @@ html, body {
 }
 
 .break-bank-header { display: flex; justify-content: space-between; align-items: center; }
-.week-stamp { font-size: 10px; color: #ffd464; letter-spacing: 0.5px; }
+.week-stamp { font-size: 10px; color: #ef64ff; letter-spacing: 0.5px; }
 
 .break-inventory-shelf {
     display: flex;
@@ -330,10 +362,10 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-left: 4px solid #ffd464;
+    border-left: 4px solid #b964ff;
 }
 .break-chip-item.state-in-use {
-    border-left-color: #64ffe8;
+    border-left-color: #a2ff64;
     background: rgba(100, 255, 232, 0.04);
 }
 
@@ -342,15 +374,15 @@ html, body {
     font-size: 9px; padding: 2px 5px; border-radius: 2px; font-weight: bold; width: fit-content;
     text-transform: uppercase;
 }
-.status-saved { background: rgba(255, 212, 100, 0.15); color: #ffd464; border: 1px solid rgba(255, 212, 100, 0.3); }
-.status-running { background: rgba(100, 255, 232, 0.15); color: #64ffe8; border: 1px solid rgba(100, 255, 232, 0.3); }
+.status-saved { background: rgba(255, 212, 100, 0.15); color: #9f64ff; border: 1px solid rgba(188, 100, 255, 0.3); }
+.status-running { background: rgba(100, 255, 232, 0.15); color: #beff64; border: 1px solid rgba(154, 255, 100, 0.3); }
 
 .chip-btn-group { display: flex; gap: 6px; }
 .chip-btn-group button {
     background: transparent; border: 1px solid rgba(134, 185, 177, 0.4); color: var(--text);
     padding: 4px 10px; font-family: inherit; font-size: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase;
 }
-.chip-btn-group button.btn-use { border-color: #ffd464; color: #ffd464; }
+.chip-btn-group button.btn-use { border-color: #e5ff64; color: #d6ff64; }
 .chip-btn-group button.btn-use:hover { background: rgba(255, 212, 100, 0.15); }
 .chip-btn-group button.btn-archive { border-color: #ff6e73; color: #ff6e73; }
 .chip-btn-group button.btn-archive:hover { background: rgba(255, 110, 115, 0.15); }
