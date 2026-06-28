@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +8,20 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
+
 <body>
 
     <canvas id="blob-canvas"></canvas>
 
     <div class="ui-wrapper" id="ui-container">
-        
+
         <div id="sidebar-expand-tab" class="oval-sticky-tab">
             <span class="tab-indicator">&gt;</span>
         </div>
 
         <aside class="sidebar" id="matrix-sidebar">
             <h1 id="sidebar-toggle-trigger">MISSION CONTROL</h1>
-            
+
             <div class="sidebar-options">
                 <div class="switch-control-group">
                     <span class="switch-label">Compact View</span>
@@ -28,6 +30,7 @@
                     </div>
                 </div>
                 <div class="view-status-tag">LAYOUT: <span id="current-view-label">BOARD VIEW</span></div>
+                <a href="Chat.html"><Button id="Page2">AI</Button></a>
             </div>
 
             <div class="token-bank">
@@ -38,9 +41,9 @@
         </aside>
 
         <main class="main-content">
-            
+
             <div class="main-column input-side">
-                
+
                 <section class="Forum">
                     <div class="panel-header">Create Directive</div>
                     <div class="task">
@@ -70,8 +73,9 @@
 
                 <section class="interest-panel">
                     <div class="panel-header">The Slot Machine (Break Generator)</div>
-                    <p class="panel-subtitle">Cost: <span style="color: #64ffe8; font-weight: bold;">1 [TKN]</span> per spin</p>
-                    
+                    <p class="panel-subtitle">Cost: <span style="color: #64ffe8; font-weight: bold;">1 [TKN]</span> per
+                        spin</p>
+
                     <div class="slots-wrapper">
                         <div class="slot-column">
                             <span class="slot-label">Slot 1: Activity</span>
@@ -107,7 +111,7 @@
             </div>
 
             <div class="main-column board-side">
-                
+
                 <div id="view-board-layout" class="matrix-board">
                     <div class="board-col">
                         <div class="col-header">To Do [Backlog]</div>
@@ -134,7 +138,7 @@
 
                 <section class="timer-control-center">
                     <div class="panel-header">Chronos Core Execution Engine</div>
-                    
+
                     <div class="timer-wrapper work-tier">
                         <div class="timer-meta">
                             <span class="clock-tier-title">01 // EDITABLE WORK FOCUS</span>
@@ -157,10 +161,11 @@
                         </div>
 
                         <div class="break-inventory-shelf" id="break-shelf-container">
-                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="timer-status-line" id="timer-status-msg">SYSTEMS RUNNING // AUTOMATED BACKGROUND TASK TRACKER ARMED</div>
+
+                    <div class="timer-status-line" id="timer-status-msg">SYSTEMS RUNNING // AUTOMATED BACKGROUND TASK
+                        TRACKER ARMED</div>
                 </section>
 
             </div>
@@ -169,4 +174,5 @@
     </div>
 
 </body>
+
 </html>

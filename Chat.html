@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission-Control // Chat Interface</title>
+    <link rel="stylesheet" href="chat.css">
+    <script src="chat.js" defer></script>
+</head>
+
+<body>
+
+    <canvas id="blob-canvas"></canvas>
+
+    <div class="ui-wrapper" id="ui-container">
+
+        <div id="sidebar-expand-tab" class="oval-sticky-tab">
+            <span class="tab-indicator">&gt;</span>
+        </div>
+
+        <aside class="sidebar" id="matrix-sidebar">
+            <h1 id="sidebar-toggle-trigger">MISSION CONTROL</h1>
+
+            <div class="sidebar-options">
+                <a href="index.html"><button id="Page2">Dashboard</button></a>
+            </div>
+
+            <div class="token-bank">
+                <div class="token-title">REWARD BANK</div>
+                <div class="token-count"><span id="token-display">0</span> <span class="tkn-sym">[TKN]</span></div>
+                <div class="token-footer">Earn 1 token per completed task</div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <div class="chat-panel">
+
+                <div class="chat-window" id="chat-window">
+                    <div class="messages" id="messages"></div>
+
+                    <div class="typing-indicator hidden" id="typing-indicator">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+
+                <div class="input-bar">
+                    <input type="text" id="chatInput" placeholder="Type your message...">
+                    <button id="sendBtn">SEND</button>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
